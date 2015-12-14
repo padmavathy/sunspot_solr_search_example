@@ -1,0 +1,92 @@
+<h1>Listing books</h1>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#hide").click(function(){
+    $("#div1").slideUp(1000);
+  });
+  $("#show").click(function(){
+    $("#div1").slideDown("slow");
+  });
+
+  $("#fade").click(function(){
+    $("#div1").fadeTo("slow",0.25);
+  });
+  $("#ani").click(function(){
+    $("#div1").animate({height:500},"slow");
+    $("#div1").animate({width:500},"slow");
+    $("#div1").animate({height:250},"slow");
+    $("#div1").animate({width:250},"slow");
+  });
+});
+</script>
+
+<%= form_tag search_books_path, :method => :get do %>
+<p>
+  <%= text_field_tag :query, params[:query] %> <%= submit_tag "Search!" %>
+</p>
+<% end %>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Isbn</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @books.each do |book| %>
+  <tr>
+    <td><%= book.title %></td>
+    <td><%= book.isbn %></td>
+    <td><%= link_to 'Show', book %></td>
+    <td><%= link_to 'Edit', edit_book_path(book) %></td>
+    <td><%= link_to 'Destroy', book, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<button onclick="playPause()">Play/Pause</button> 
+  <button onclick="makeBig()">Big</button>
+  <button onclick="makeSmall()">Small</button>
+  <button onclick="makeNormal()">Normal</button>
+  <button id="hide">Hide</button>
+<button id="show">Show</button>
+<button id="fade">Fade</button>
+<button id="ani">Animate</button>
+<br/>
+<div id="div1">
+<video id="video1">
+  <source src="/videos/mov_bbb.mp4" type="video/mp4" />
+   </video>
+   </div>
+<script type="text/javascript"> 
+var myVideo=document.getElementById("video1"); 
+
+function playPause()
+{ 
+if (myVideo.paused) 
+  myVideo.play(); 
+else 
+  myVideo.pause(); 
+} 
+
+function makeBig()
+{ 
+myVideo.height=(myVideo.videoHeight*2); 
+} 
+
+function makeSmall()
+{ 
+myVideo.height=(myVideo.videoHeight/2); 
+} 
+
+function makeNormal()
+{ 
+myVideo.height=(myVideo.videoHeight); 
+} 
+</script> 
+
+<%= link_to 'New Book', new_book_path %>
